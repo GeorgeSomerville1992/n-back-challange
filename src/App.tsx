@@ -10,19 +10,11 @@ function App() {
   const [gameResults, setGameResults] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    // do something here
     e.preventDefault();
-    // stop browser refresh
     setGetReady(true);
   };
 
   const handleGameOver = (correctGuesses: number, incorrectGuesses: number) => {
-    console.log(
-      "Game over! Correct guesses:",
-      correctGuesses,
-      "Incorrect guesses:",
-      incorrectGuesses,
-    );
     setGameStarted(false);
     setName("");
     setGameResults(
@@ -40,37 +32,41 @@ function App() {
     setName("");
   };
 
-  return (
-    <>
-      <header>N-Back challange</header>
+  /* Insteaf of loads of states perhaps one with an object? */
 
-      <section>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
+  return (
+    <main className="h-full flex flex-col box-border">
+      <header className="grow">
+        <h1>N-Back challange</h1>
+      </header>
+      {!gameStarted && !gameResults && !getReady && (
+        <form onSubmit={handleSubmit} className="flex flex-col text-center">
+          <textarea
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
+            placeholder="Enter your name or some other sentence"
             minLength={5}
+            className="placeholder: text-center"
             required
-          ></input>
-          <button type="submit">submit</button>
+          ></textarea>
+          <button className="btn-primary mt-20" type="submit">
+            Submit
+          </button>
         </form>
-        {gameStarted && name && (
-          <>
-            <div> the same is started</div>
-            <Game nBack={name} handleGameOver={handleGameOver} />
-          </>
-        )}
-        {getReady && <GetReady handleGameReady={handleGameReady} />}
-        {!gameStarted && gameResults && (
-          <>
-            <div>{gameResults}</div>
-            <button onClick={handleReset}>Reset</button>
-          </>
-        )}
-      </section>
-    </>
+      )}
+      {gameStarted && !gameResults && (
+        <Game nBack={name} handleGameOver={handleGameOver} />
+      )}
+      {getReady && <GetReady handleGameReady={handleGameReady} />}
+      {!gameStarted && gameResults && (
+        <>
+          <p className="grow">{gameResults}</p>
+          <button className="btn-primary w-full" onClick={handleReset}>
+            Reset
+          </button>
+        </>
+      )}
+    </main>
   );
 }
 

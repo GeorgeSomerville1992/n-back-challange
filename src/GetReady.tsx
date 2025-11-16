@@ -21,7 +21,7 @@ export const GetReady: React.FC<GetReadyProps> = ({ handleGameReady }) => {
   }, [countDown, handleGameReady]);
 
   return (
-    <div>
+    <div className="grow">
       <h2 className="text-3xl">Get Ready!</h2>
       <p className="mt-4">
         The game will start shortly. Prepare yourself to focus and remember the

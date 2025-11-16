@@ -32,8 +32,10 @@ describe("N-Back Challenge App", () => {
     render(<App />);
     // const user = userEvent.setup();
 
-    const input = screen.getByPlaceholderText("Enter your name");
-    const button = screen.getByText("submit");
+    const input = screen.getByPlaceholderText(
+      "Enter your name or some other sentence",
+    );
+    const button = screen.getByText("Submit");
 
     // Check initial render
     expect(input).toBeInTheDocument();
@@ -53,16 +55,35 @@ describe("N-Back Challenge App", () => {
     });
   });
 
+  it("should not start the game if no input has been given", async () => {
+    render(<App />);
+    const input = screen.getByPlaceholderText(
+      "Enter your name or some other sentence",
+    );
+    const button = screen.getByText("Submit");
+
+    // Simulate user input with less than 5 characters
+    fireEvent.change(input, { target: { value: "" } });
+    // expect((input as HTMLInputElement).value).toBe("ABCD");
+
+    // Simulate form submission
+    fireEvent.click(button);
+
+    // Ensure GetReady component does not appear
+    await waitFor(() => {
+      expect(screen.queryByText("Get Ready!")).not.toBeInTheDocument();
+    });
+  });
+
   it("should start the game after the countdown", async () => {
     vi.useFakeTimers();
     render(<App />);
-    // TODO Check user event works
-    // const user = userEvent.setup();
 
-    const input = screen.getByPlaceholderText("Enter your name");
-    const button = screen.getByText("submit");
-
-    // await user.type(input, 'ABCDE');
+    const input = screen.getByPlaceholderText(
+      "Enter your name or some other sentence",
+    );
+    const button = screen.getByText("Submit");
+    // TODO use userevent
     fireEvent.change(input, { target: { value: "ABCDE" } });
     fireEvent.click(button);
 
@@ -72,7 +93,7 @@ describe("N-Back Challenge App", () => {
 
     vi.advanceTimersByTime(1000);
 
-    // // Wait for Game component to appear
+    // // Wait for The game has started to appear
     await waitFor(() => {
       expect(screen.getByText("3")).toBeInTheDocument();
     });
@@ -89,17 +110,19 @@ describe("N-Back Challenge App", () => {
       expect(screen.getByText("1")).toBeInTheDocument();
     });
 
-    vi.advanceTimersByTime(1000);
+    vi.advanceTimersByTime(900);
 
     await waitFor(() => {
-      expect(screen.getByText("Game Component")).toBeInTheDocument();
+      expect(screen.getByText("A")).toBeInTheDocument();
     });
   });
 
   it("runs the game and handles guesses inCorrectly", async () => {
     render(<App />);
-    const input = screen.getByPlaceholderText("Enter your name");
-    const button = screen.getByText("submit");
+    const input = screen.getByPlaceholderText(
+      "Enter your name or some other sentence",
+    );
+    const button = screen.getByText("Submit");
 
     fireEvent.change(input, { target: { value: "ABCDE" } });
     fireEvent.click(button);
@@ -111,11 +134,9 @@ describe("N-Back Challenge App", () => {
     vi.advanceTimersByTime(3000);
 
     await waitFor(() => {
-      expect(screen.getByText("Game Component")).toBeInTheDocument();
+      expect(screen.getByText("A")).toBeInTheDocument();
     });
 
-    // First letter A
-    expect(screen.getByText("A")).toBeInTheDocument();
     vi.advanceTimersByTime(5000);
 
     await waitFor(() => {
@@ -154,6 +175,62 @@ describe("N-Back Challenge App", () => {
     await waitFor(() => {
       expect(
         screen.getByText(/Game over! Correct guesses: 0, Incorrect guesses: 2/),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("runs the game and handles guesses correctly", async () => {
+    render(<App />);
+    const input = screen.getByPlaceholderText(
+      "Enter your name or some other sentence",
+    );
+    const button = screen.getByText("Submit");
+
+    fireEvent.change(input, { target: { value: "ABAB" } });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(screen.getByText("Get Ready!")).toBeInTheDocument();
+    });
+
+    vi.advanceTimersByTime(3000);
+
+    // First letter A
+
+    await waitFor(() => {
+      expect(screen.getByText("A")).toBeInTheDocument();
+    });
+
+    vi.advanceTimersByTime(5000);
+
+    // Second letter B
+    await waitFor(() => {
+      expect(screen.getByText("B")).toBeInTheDocument();
+    });
+
+    vi.advanceTimersByTime(5000);
+
+    await waitFor(() => {
+      expect(screen.getByText("A")).toBeInTheDocument();
+      const guessButton2 = screen.getByText("Guess");
+      fireEvent.click(guessButton2);
+      expect(screen.getByText("Correct!")).toBeInTheDocument();
+    });
+
+    vi.advanceTimersByTime(2000);
+
+    await waitFor(() => {
+      expect(screen.getByText("B")).toBeInTheDocument();
+      const guessButton3 = screen.getByText("Guess");
+      fireEvent.click(guessButton3);
+      expect(screen.getByText("Correct!")).toBeInTheDocument();
+    });
+
+    vi.advanceTimersByTime(2000);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/Game over! Correct guesses: 2, Incorrect guesses: 0/),
       ).toBeInTheDocument();
     });
   });

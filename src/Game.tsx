@@ -52,21 +52,26 @@ export const Game = ({ nBack, handleGameOver }: GameProps) => {
     setHasGuessed(true);
   };
 
-  const isGuessable = currentLetterIndex === null || currentLetterIndex > 2;
+  const isGuessable = currentLetterIndex === null || currentLetterIndex >= 2;
   const isGuessButtonVisible = isGuessable && !hasGuessed;
 
   return (
-    <div>
-      <h2>Game Component</h2>
-      <div>
-        {currentLetterIndex !== null && currentLetterIndex < letters.length ? (
-          <span className="text-5xl">{letters[currentLetterIndex]}</span>
-        ) : (
-          <span className="text-2xl">Get ready...</span>
-        )}
-        {isGuessButtonVisible && <button onClick={handleGuess}>Guess</button>}
-        {hasGuessed && <span>{isCorrect ? "Correct!" : "Incorrect!"}</span>}
-      </div>
-    </div>
+    <section className="grow flex content-space justify-between flex-col">
+      {currentLetterIndex !== null && currentLetterIndex < letters.length && (
+        <span className="text-5xl">{letters[currentLetterIndex]}</span>
+      )}
+      {hasGuessed && <div>{isCorrect ? "Correct!" : "Incorrect!"}</div>}
+      {isGuessButtonVisible && (
+        <button className="btn-primary" onClick={handleGuess}>
+          Guess
+        </button>
+      )}
+    </section>
   );
 };
+
+//  {currentLetterIndex !== null && currentLetterIndex < letters.length ? (
+//     <span className="text-5xl">{letters[currentLetterIndex]}</span>
+//   ) : (
+//     <span className="text-2xl">Get ready...</span>
+//   )}
