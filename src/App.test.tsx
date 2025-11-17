@@ -12,32 +12,15 @@ describe("N-Back Challenge App", () => {
     vi.useRealTimers();
   });
 
-  it("should render the form and handle user input correctly", async () => {
-    render(<App />);
-    // const user = userEvent.setup();
-
-    const input = screen.getByPlaceholderText(
-      "Enter your name or some other long word",
-    );
-    const button = screen.getByText("Submit");
-
-    // Check initial render
-    expect(input).toBeInTheDocument();
-    expect(button).toBeInTheDocument();
-
-    // Simulate user input
-    // await user.type(input, 'ABCDE');
-    fireEvent.change(input, { target: { value: "ABCDE" } });
-    expect((input as HTMLInputElement).value).toBe("ABCDE");
-
-    // Simulate form submission
-    fireEvent.click(button);
-
-    // Wait for GetReady component to appear
-    await waitFor(() => {
-      expect(screen.getByText("Get Ready!")).toBeInTheDocument();
-    });
-  });
+  global.fetch = vi.fn(() =>
+    Promise.resolve({
+      ok: true,
+      status: 200,
+      statusText: "OK",
+      headers: new Headers(),
+      json: () => Promise.resolve({ status: "success" }),
+    } as Response),
+  );
 
   it("should not start the game if no input has been given", async () => {
     render(<App />);
@@ -48,7 +31,6 @@ describe("N-Back Challenge App", () => {
 
     // Simulate user input with less than 5 characters
     fireEvent.change(input, { target: { value: "" } });
-    // expect((input as HTMLInputElement).value).toBe("ABCD");
 
     // Simulate form submission
     fireEvent.click(button);
@@ -69,15 +51,18 @@ describe("N-Back Challenge App", () => {
     const button = screen.getByText("Submit");
     // TODO use userevent
     fireEvent.change(input, { target: { value: "ABCDE" } });
+    expect((input as HTMLInputElement).value).toBe("ABCDE");
     fireEvent.click(button);
 
     await waitFor(() => {
       expect(screen.getByText("Get Ready!")).toBeInTheDocument();
+            expect(
+        screen.getByText("Game state changed to: getReady"),
+      ).toBeInTheDocument();
     });
 
     vi.advanceTimersByTime(1000);
 
-    // // Wait for The game has started to appear
     await waitFor(() => {
       expect(screen.getByText("3")).toBeInTheDocument();
     });
@@ -127,12 +112,9 @@ describe("N-Back Challenge App", () => {
       expect(screen.getByText("B")).toBeInTheDocument();
     });
 
-    // Second letter B
-
     vi.advanceTimersByTime(2000);
 
     await waitFor(() => {
-      // C should also be guessable. Need to fix?
       expect(screen.getByText("C")).toBeInTheDocument();
     });
 
@@ -179,15 +161,12 @@ describe("N-Back Challenge App", () => {
 
     vi.advanceTimersByTime(3000);
 
-    // First letter A
-
     await waitFor(() => {
       expect(screen.getByText("A")).toBeInTheDocument();
     });
 
     vi.advanceTimersByTime(5000);
 
-    // Second letter B
     await waitFor(() => {
       expect(screen.getByText("B")).toBeInTheDocument();
     });
@@ -216,6 +195,11 @@ describe("N-Back Challenge App", () => {
       expect(
         screen.getByText(/Game over! Correct guesses: 2, Incorrect guesses: 0/),
       ).toBeInTheDocument();
+    });
+
+    screen.getByRole("button", { name: "Reset" }).click();
+    await waitFor(() => {
+      expect(screen.getByText("Submit")).toBeInTheDocument();
     });
   });
 });

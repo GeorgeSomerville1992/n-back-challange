@@ -1,12 +1,11 @@
-export const sendEvent = async (event: string, data: unknown) => {
+export const sendEvent = async (event: string) => {
   try {
-    // whatever this ma be. customerse respone etc..
     const response = await fetch("/api/event", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ event, data }),
+      body: JSON.stringify({ event }),
     });
 
     if (!response.ok) {

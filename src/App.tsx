@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Game } from "./Game";
 import { GetReady } from "./GetReady";
 import { NotStarted } from "./NotStarted";
+import { sendEvent } from "./server/api";
+import { Notification } from "./Notification";
 import "./App.css";
 
 function App() {
@@ -9,13 +11,13 @@ function App() {
   const [gameResults, setGameResults] = useState("");
   const [gameStateKey, setGameStateKey] =
     useState<keyof typeof gameState>("notStarted");
+  const [notification, setNotification] = useState("");
 
   const handleSetGame = (name: string) => {
     setName(name);
     setGameStateKey("getReady");
   };
 
-  // simply just rerender the game component with new props to reset its state!
   const handleGameOver = (correctGuesses: number, incorrectGuesses: number) => {
     setGameResults(
       `Game over! Correct guesses: ${correctGuesses}, Incorrect guesses: ${incorrectGuesses}`,
@@ -32,11 +34,26 @@ function App() {
     setGameStateKey("notStarted");
   };
 
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification("");
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
+  useEffect(() => {
+    if (gameStateKey && gameStateKey !== "notStarted") {
+      sendEvent(`Game state changed to: ${gameStateKey}`);
+      setNotification(`Game state changed to: ${gameStateKey}`);
+    }
+  }, [gameStateKey]);
+
   const gameState = {
     notStarted: () => <NotStarted handleSetGame={handleSetGame} />,
-    getReady: () => {
-      return <GetReady handleGameReady={handleGameReady} />;
-    },
+    getReady: () => <GetReady handleGameReady={handleGameReady} />,
     started: () => <Game nBack={name} handleGameOver={handleGameOver} />,
     finished: () => (
       <>
@@ -53,6 +70,7 @@ function App() {
       <header className="grow">
         <h1 className="text-7xl">N-Back challange</h1>
       </header>
+      {notification && <Notification notification={notification} />}
       {gameState[gameStateKey]()}
     </main>
   );
