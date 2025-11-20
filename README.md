@@ -1,19 +1,27 @@
-Create a react app where the user can insert their name and then the 2-back task starts
-(b) the task ends after 2 errors or after a fixed number of letters displayed (say 15); once the task is
+N-Back challange
 
-completed the app shows the number of errors and number of correct guesses
+If not using link, please install node modules
 
-(c) When the user interacts with the application an event is fired to capture what happened and
+`npm run dev` - runs locally on port 5174
+`npm run coverage` - runs tests and prints coverage
 
-when (mimicking the interaction with an /event API in the backend)
-Event buss- event api. Backend . this is cool
+``
 
-(d) make the UI mobile compatible
-(e) try to make this as user friendly and engaging as possible; if needed feel free to use images as
-opposed to letters or to modify the task a little
+### Brief and user acceptance criteria
 
-// make each correspond to a letter
+- User can insert their last name longer than 4 letters
 
-// use userEvent
-Deploy
-Clear up cra..
+- User can start the game
+
+- User should not be able to guest the first 2 letters
+
+- After the third, user can guess, user is then presented with correct or incorrect guess
+
+- After the last letter or if they have guest to wrong. User is presented with results screen
+
+- User is also presented with small state notification when game state has changed
+
+Bonus
+
+- User can customize complexity of n (2n, or more)
+- User is presented with funky pictures and has to guess the letter based on the picture
