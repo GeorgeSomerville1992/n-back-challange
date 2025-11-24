@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Game } from "./components/Game";
 import { CountDown } from "./components/CountDown";
-import { NotStarted } from "./components/NotStarted";
+import { NotStarted } from "./components/Form";
 import { sendEvent } from "./server/api";
 import Toastify from "toastify-js";
 import "./App.css";
@@ -54,7 +54,7 @@ function App() {
   const gameState = {
     notStarted: <NotStarted handleSetGame={handleSetGame} />,
     countDown: <CountDown handleGameReady={handleGameReady} />,
-    started: <Game nBack={name} handleGameOver={handleGameOver} />,
+    started: <Game gameString={name} handleGameOver={handleGameOver} />,
     finished: (
       <>
         <p className="grow">{gameResults}</p>

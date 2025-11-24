@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 type GameProps = {
-  nBack: string;
+  gameString: string;
   handleGameOver: (correctGuesses: number, incorrectGuesses: number) => void;
 };
 
-export const Game = ({ nBack, handleGameOver }: GameProps) => {
-  const letters = nBack.split("");
+export const Game = ({ gameString, handleGameOver }: GameProps) => {
+  const letters = gameString.split("");
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
   const [incorrectGuesses, setIncorrectGuesses] = useState(0);
   const [correctGuesses, setCorrectGuesses] = useState(0);
