@@ -3,6 +3,18 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 
 import App from "./App";
 
+const mocks = vi.hoisted(() => {
+  return { shuffleArray: vi.fn(() => "ABEDE") };
+});
+
+vi.mock("./lib/utils", async (importActual) => {
+  const actual = await importActual<typeof import("./lib/utils")>();
+  return {
+    ...actual,
+    shuffleArray: mocks.shuffleArray,
+  };
+});
+
 describe("N-Back Challenge App", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -45,14 +57,13 @@ describe("N-Back Challenge App", () => {
 
     const input = screen.getByPlaceholderText("Enter your name here");
     const button = screen.getByText("Start");
-    // TODO use userevent
+
     fireEvent.change(input, { target: { value: "ABCDE" } });
     expect((input as HTMLInputElement).value).toBe("ABCDE");
     fireEvent.click(button);
 
     await waitFor(() => {
       expect(screen.getByText("Get Ready!")).toBeInTheDocument();
-      // test toast? mock toastify
     });
 
     vi.advanceTimersByTime(1000);
@@ -85,7 +96,7 @@ describe("N-Back Challenge App", () => {
     const input = screen.getByPlaceholderText("Enter your name here");
     const button = screen.getByText("Start");
 
-    fireEvent.change(input, { target: { value: "ABCDE" } });
+    fireEvent.change(input, { target: { value: "ABEDE" } });
     fireEvent.click(button);
 
     await waitFor(() => {
@@ -107,7 +118,7 @@ describe("N-Back Challenge App", () => {
     vi.advanceTimersByTime(2000);
 
     await waitFor(() => {
-      expect(screen.getByText("C")).toBeInTheDocument();
+      expect(screen.getByText("E")).toBeInTheDocument();
     });
 
     vi.advanceTimersByTime(2000);
@@ -123,16 +134,13 @@ describe("N-Back Challenge App", () => {
 
     await waitFor(() => {
       expect(screen.getByText("E")).toBeInTheDocument();
-      const guessButton3 = screen.getByText("Guess");
-      fireEvent.click(guessButton3);
-      expect(screen.getByText("Incorrect!")).toBeInTheDocument();
     });
 
     vi.advanceTimersByTime(2000);
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Game over! Correct guesses: 0, Incorrect guesses: 2/),
+        screen.getByText(/Game over! Correct guesses: 0, Incorrect guesses: 1/),
       ).toBeInTheDocument();
     });
   });
@@ -142,7 +150,7 @@ describe("N-Back Challenge App", () => {
     const input = screen.getByPlaceholderText("Enter your name here");
     const button = screen.getByText("Start");
 
-    fireEvent.change(input, { target: { value: "ABAB" } });
+    fireEvent.change(input, { target: { value: "ABEDE" } });
     fireEvent.click(button);
 
     await waitFor(() => {
@@ -164,16 +172,20 @@ describe("N-Back Challenge App", () => {
     vi.advanceTimersByTime(5000);
 
     await waitFor(() => {
-      expect(screen.getByText("A")).toBeInTheDocument();
-      const guessButton2 = screen.getByText("Guess");
-      fireEvent.click(guessButton2);
-      expect(screen.getByText("Correct!")).toBeInTheDocument();
+      expect(screen.getByText("E")).toBeInTheDocument();
     });
 
-    vi.advanceTimersByTime(2000);
+    vi.advanceTimersByTime(5000);
 
     await waitFor(() => {
-      expect(screen.getByText("B")).toBeInTheDocument();
+      expect(screen.getByText("D")).toBeInTheDocument();
+    });
+
+    vi.advanceTimersByTime(5000);
+
+    await waitFor(() => {
+      expect(screen.getByText("E")).toBeInTheDocument();
+
       const guessButton3 = screen.getByText("Guess");
       fireEvent.click(guessButton3);
       expect(screen.getByText("Correct!")).toBeInTheDocument();
@@ -183,7 +195,7 @@ describe("N-Back Challenge App", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Game over! Correct guesses: 2, Incorrect guesses: 0/),
+        screen.getByText(/Game over! Correct guesses: 1, Incorrect guesses: 0/),
       ).toBeInTheDocument();
     });
 
