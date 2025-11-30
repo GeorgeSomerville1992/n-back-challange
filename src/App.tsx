@@ -5,16 +5,17 @@ import { NotStarted } from "./components/NotStarted";
 import { sendEvent } from "./server/api";
 import { Instructions } from "./components/Instructions";
 import Toastify from "toastify-js";
+
 import "./App.css";
 
 function App() {
-  const [name, setName] = useState("");
+  const [gameString, setGameString] = useState("");
   const [gameResults, setGameResults] = useState("");
   const [gameStateKey, setGameStateKey] =
     useState<keyof typeof gameState>("notStarted");
 
-  const handleSetGame = (name: string) => {
-    setName(name);
+  const handleSetGame = (gameString: string) => {
+    setGameString(gameString);
     setGameStateKey("countDown");
   };
 
@@ -60,7 +61,7 @@ function App() {
       </>
     ),
     countDown: <CountDown handleGameReady={handleGameReady} />,
-    started: <Game gameString={name} handleGameOver={handleGameOver} />,
+    started: <Game gameString={gameString} handleGameOver={handleGameOver} />,
     finished: (
       <>
         <p className="grow">{gameResults}</p>

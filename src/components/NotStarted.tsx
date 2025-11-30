@@ -35,7 +35,7 @@ export const NotStarted = ({ handleSetGame }: NotStartedProps) => {
       <Button
         variant="outline"
         type="submit"
-        className="mt-10 block w-50 self-center btn-primary"
+        className="mt-5 block w-50 self-center btn-primary"
       >
         Start
       </Button>

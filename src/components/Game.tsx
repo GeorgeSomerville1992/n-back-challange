@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { shuffleArray } from "@/lib/utils";
 
 type GameProps = {
   gameString: string;
@@ -6,7 +7,12 @@ type GameProps = {
 };
 
 export const Game = ({ gameString, handleGameOver }: GameProps) => {
-  const letters = gameString.split("");
+  const gameStringArray = gameString.split("");
+  console.log("gameStringArray:", gameStringArray);
+  const letters = shuffleArray(gameStringArray);
+  console.log("Shuffled Letters:", letters);
+  // const letters = gameString.split("");
+
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
   const [incorrectGuesses, setIncorrectGuesses] = useState(0);
   const [correctGuesses, setCorrectGuesses] = useState(0);
