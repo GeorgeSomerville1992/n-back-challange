@@ -27,7 +27,7 @@ export const CountDown: React.FC<GetReadyProps> = ({ handleGameReady }) => {
         The game will start shortly. Prepare yourself to focus and remember the
         sequence of letters.
       </p>
-      <p>{countDown}</p>
+      <h4>{countDown}</h4>
     </div>
   );
 };

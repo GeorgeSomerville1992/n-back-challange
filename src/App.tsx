@@ -64,7 +64,7 @@ function App() {
     started: <Game gameString={gameString} handleGameOver={handleGameOver} />,
     finished: (
       <>
-        <p className="grow">{gameResults}</p>
+        <p className="grow content-center">{gameResults}</p>
         <button className="btn-primary w-full" onClick={handleReset}>
           Reset
         </button>
