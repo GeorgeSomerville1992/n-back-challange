@@ -46,9 +46,15 @@ test("Starts the game", async ({ page }) => {
   page.clock.fastForward(1000);
 
   await expect(page.getByRole("heading", { name: /E/ })).toBeVisible();
-  const guessButton = page.getByRole("button", { name: "Start" });
+  const guessButton = page.getByRole("button", { name: "Guess" });
   await expect(guessButton).toBeVisible();
   await guessButton.click();
 
-  await page.getByRole("button", { name: "Start" }).click();
+  await page.getByRole("button", { name: "Guess" }).click();
+  await expect(page.getByRole("heading", { name: /Correct!/ })).toBeVisible();
+
+  page.clock.fastForward(4000);
+  // not working...
+  // await expect(page.getByRole("paragraph", { name: /Game over! Correct guesses: 0, Incorrect guesses: 1/ })).toBeVisible();
+
 });

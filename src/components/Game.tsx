@@ -59,7 +59,7 @@ export const Game = ({ gameString, handleGameOver }: GameProps) => {
           {letters[currentLetterIndex]}
         </h2>
       )}
-      {hasGuessed && <div>{isCorrect ? "Correct!" : "Incorrect!"}</div>}
+      {hasGuessed && <h4>{isCorrect ? "Correct!" : "Incorrect!"}</h4>}
       {isGuessButtonVisible && (
         <button className="btn-primary" onClick={handleGuess}>
           Guess
