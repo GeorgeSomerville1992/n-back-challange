@@ -4,8 +4,8 @@ If not using link, please install node modules
 
 `npm run dev` - runs locally on port 5174
 `npm run coverage` - runs tests and prints coverage
-
-``
+`npx playwright test` - runs tests in playwright
+`npx playwright test --project=chromium --debug` - debugs playwright test
 
 ### Brief and user acceptance criteria
 

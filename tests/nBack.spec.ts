@@ -12,7 +12,7 @@ test("Displays home page correctly", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Start" })).toBeVisible();
 });
-
+// use it as a user would!
 test("Starts the game", async ({ page }) => {
   // use clock?
   await page.goto("http://localhost:5173/");
@@ -35,7 +35,6 @@ test("Starts the game", async ({ page }) => {
   // Wait for another second and assert the countdown is "1"
   page.clock.fastForward(1000);
   await expect(page.getByRole("heading", { name: /1/ })).toBeVisible();
-  // wait for text to change?
 
   page.clock.fastForward(1000);
 
@@ -55,6 +54,7 @@ test("Starts the game", async ({ page }) => {
 
   page.clock.fastForward(4000);
   // not working...
-  // await expect(page.getByRole("paragraph", { name: /Game over! Correct guesses: 0, Incorrect guesses: 1/ })).toBeVisible();
-
+  // await expect(page.getByRole("paragraph", { name: 'Game over! Correct guesses' })).toBeVisible();
+  // expect(page.getByText(/Game over!/)).toBeVisible();
+  await expect(page.getByRole("button", { name: "Reset" })).toBeVisible();
 });
