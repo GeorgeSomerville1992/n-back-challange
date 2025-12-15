@@ -9,7 +9,9 @@
     "coverage": "vitest run --coverage",
     "build": "tsc -b && vite build",
     "lint": "prettier --write . && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "playwright": "playwright test",
+    "playwright-debug": "playwright test --debug"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.8",
