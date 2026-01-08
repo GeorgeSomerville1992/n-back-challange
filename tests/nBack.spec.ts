@@ -12,9 +12,8 @@ test("Displays home page correctly", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Start" })).toBeVisible();
 });
-// use it as a user would!
+
 test("Starts the game", async ({ page }) => {
-  // use clock?
   await page.goto("http://localhost:5173/");
   await page.clock.install();
 
@@ -32,31 +31,9 @@ test("Starts the game", async ({ page }) => {
   // Wait for another second and assert the countdown is "1"
   page.clock.fastForward(1000);
   await expect(page.getByRole("heading", { name: /1/ })).toBeVisible();
-
-  // page.clock.fastForward(1000);
-
-  // await expect(page.getByRole("heading", { name: /E/ })).toBeVisible();
-  // page.clock.fastForward(1000);
-
-  // await expect(page.getByRole("heading", { name: /E/ })).toBeVisible();
-  // page.clock.fastForward(1000);
-
-  // await expect(page.getByRole("heading", { name: /E/ })).toBeVisible();
-  // const guessButton = page.getByRole("button", { name: "Guess" });
-  // await expect(guessButton).toBeVisible();
-  // await guessButton.click();
-
-  // await page.getByRole("button", { name: "Guess" }).click();
-  // await expect(page.getByRole("heading", { name: /Correct!/ })).toBeVisible();
-
-  // // page.clock.fastForward(4000);
-  // // not working...
-  // // await expect(page.getByRole("paragraph", { name: 'Game over! Correct guesses' })).toBeVisible();
-
-  // await expect(page.getByRole("button", { name: "Reset" })).toBeVisible();
 });
 
-test("Guess incorrectly and ends game", async ({ page }) => {
+test("Guess correctly and ends game", async ({ page }) => {
   await page.goto("http://localhost:5173/");
   await page.clock.install();
 
@@ -86,20 +63,6 @@ test("Guess incorrectly and ends game", async ({ page }) => {
   await page.getByRole("button", { name: "Guess" }).click(); // correct
 
   await expect(page.getByRole("button", { name: "Reset" })).toBeVisible();
-
-//   page.clock.fastForward(2000);
-//   await expect(page.getByRole("heading", { name: /E/ })).toBeVisible();
-//   await page.getByRole("button", { name: "Guess" }).click(); // correct
-
-//   page.clock.fastForward(2000);
-//   await expect(page.getByRole("heading", { name: /E/ })).toBeVisible();
-//   await page.getByRole("button", { name: "Guess" }).click(); // correct
-
-//   page.clock.fastForward(2000);
-//   await expect(page.getByRole("heading", { name: /E/ })).toBeVisible();
-//   await page.getByRole("button", { name: "Guess" }).click(); // correct
-
-//   page.clock.fastForward(2000);
-//   await expect(page.getByRole("heading", { name: /E/ })).toBeVisible();
-//   await page.getByRole("button", { name: "Guess" }).click(); // correct
 });
+
+test("Guess incorrectly and ends game", async ({ page }) => {});

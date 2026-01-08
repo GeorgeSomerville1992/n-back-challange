@@ -1,4 +1,4 @@
-Willesden-junction
+### N-Back memory game
 
 If not using link, please install node modules
 
@@ -7,7 +7,17 @@ If not using link, please install node modules
 `npx playwright test` - runs tests in playwright
 `npx playwright test --project=chromium --debug` - debugs playwright test
 
-### Brief and user acceptance criteria
+### Deployment link
+
+https://n-back-challange.vercel.app/
+
+### Architecture
+
+- Single page app which loads a game
+- Unit tests using mocks and playwright tests. Simulating as close to a how a user would interact
+- tailwind with shadcn for styling
+
+### user acceptance criteria
 
 - User can insert their last name longer than 4 letters
 
